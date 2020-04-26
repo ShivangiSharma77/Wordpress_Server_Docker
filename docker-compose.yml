@@ -1,0 +1,33 @@
+version: '3'
+services:
+        mysql_os:
+                image: mysql:5.7
+                volumes:
+                        - mysql_store_new:/var/lib/mysql
+                restart: always
+                environment:
+                        MYSQL_ROOT_PASSWORD: rootpass
+                        MYSQL_USER: shivangi
+                        MYSQL_PASSWORD: redhat
+                        MYSQL_DATABASE: mydb
+        wp_os1:
+                image: wordpress:5.1.1-php7.3-apache
+                restart: always
+                depends_on:
+                           - mysql_os
+                ports:
+                      - 8081:80
+                environment:
+                        WORDPRESS_DB_HOST: mysql_os
+                        WORDPRESS_DB_USER: shivangi
+                        WORDPRESS_DB_PASSWORD: redhat
+                        WORDPRESS_DB_NAME: mydb
+                volumes:
+                        - wp_storage_new:/var/www/html
+
+volumes:
+        wp_storage_new:
+        mysql_store_new:
+
+
+
